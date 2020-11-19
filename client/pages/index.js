@@ -5,6 +5,7 @@ import {loadItemsAC, setItemsAC} from '../redux/action-creators';
 
 export default function Home({items: serverItems}) {
   const {items} = useSelector(state => state);
+  const [filterItems, setFilterItems] = useState(items);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,12 +16,28 @@ export default function Home({items: serverItems}) {
     }
   }, [dispatch])
 
+  useEffect(() => {
+    setFilterItems(items)
+  }, [items])
+
+  const filter = (e) => {
+    const {value} = e.target;
+    setFilterItems(items);
+    setFilterItems(prev => {
+      return prev.filter(item => {
+        return item.itemName.toLowerCase().indexOf(value.toLowerCase().trim()) > -1
+      })
+    })
+  }
+
   return (
     <MainLayout>
-      {items.map(item => {
+      <input onChange={filter}/>
+      {filterItems.map(item => {
         return <div key={item._id}>
-          <div>{item.itemName}</div>
-          <div>{item.description}</div>
+          <div>Товар:{item.itemName}</div>
+          <div>id:{item._id}</div>
+          <div>Описание:{item.description}</div>
         </div>
       })}
     </MainLayout>
