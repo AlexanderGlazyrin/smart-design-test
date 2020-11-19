@@ -11,7 +11,6 @@ router.get('/market', async (req, res) => {
 })
 
 router.post('/new-item', async (req, res) => {
-  console.log(123)
   try {
     const {itemName, description} = req.body;
     const item = new Item({
@@ -19,7 +18,18 @@ router.post('/new-item', async (req, res) => {
       description
     })
     await item.save()
-    res.json({item})
+    res.status(201).json({item})
+  } catch (error) {
+    res.status(500).json({error, message: error.message})
+  }
+})
+
+router.delete('/delete-item', async (req, res) => {
+  const {id} = req.body
+  try {
+    await Item.findByIdAndDelete(id);
+    const items = await Item.find({})
+    res.status(200).json({items})
   } catch (error) {
     res.status(500).json({error, message: error.message})
   }

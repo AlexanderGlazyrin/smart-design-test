@@ -33,3 +33,14 @@ export const createItemAC = (payload) => {
   }
 }
 
+export const deleteItemAC = (payload) => {
+  return async (dispatch) => {
+    const res = await(await fetch('http://localhost:3001/delete-item', {
+      method: 'DELETE',
+      headers: {'Content-type': 'application/json'},
+      body: JSON.stringify({id: payload})
+    })).json()
+    dispatch(setItemsAC(res.items));
+  }
+}
+
