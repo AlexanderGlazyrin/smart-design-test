@@ -64,15 +64,19 @@ export default function Home({items: serverItems}) {
 
   return (
     <MainLayout>
-      <div className={styles.search}>
         <h2>Поиск товара</h2>
-        <Select defaultValue={select} style={{width: '14%'}} onChange={changeSelect}>
-          <Option value="name">Наименование</Option>
-          <Option value="id">Идентификатор</Option>
-        </Select>
-        <Input style={{width: '86%'}} onChange={filter} value={inputValue}/>
-      </div>
-      <div className={styles.items}>
+        <Row gutter={[0, 24]}>
+          <Col span={4}>
+            <Select defaultValue={select} style={{width: '100%'}} onChange={changeSelect}>
+              <Option value="name">Наименование</Option>
+              <Option value="id">Идентификатор</Option>
+            </Select>
+          </Col>
+          <Col span={20}>
+            <Input onChange={filter} value={inputValue}/>
+          </Col>
+        </Row>
+      <Row gutter={[24, 24]}>
         {filterItems.map(item => {
           return <AppCard
             key={item._id}
@@ -81,7 +85,7 @@ export default function Home({items: serverItems}) {
             description={item.description}
           />
         })}
-      </div>
+      </Row>
     </MainLayout>
   )
 }
