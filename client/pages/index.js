@@ -5,7 +5,6 @@ import {loadItemsAC, setItemsAC} from '../redux/action-creators';
 import {Input, Col, Row, Select} from 'antd';
 import {AppCard} from '../components/Card/AppCard';
 import Link from 'next/link';
-import styles from '../styles/Home.module.css'
 
 const {Option} = Select;
 
@@ -77,7 +76,7 @@ export default function Home({items: serverItems}) {
           </Col>
         </Row>
       <Row gutter={[24, 24]}>
-        {filterItems.map(item => {
+        {filterItems.reverse().map(item => {
           return <AppCard
             key={item._id}
             title={item.itemName}
