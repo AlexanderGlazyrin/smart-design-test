@@ -16,9 +16,9 @@ export const AppCard = ({title, id, description, params}) => {
       <div className="site-card-border-less-wrapper">
         <Card title={title} bordered={false} extra={<a onClick={deleteItem}><DeleteOutlined/></a>}
               style={{minHeight: 250}}>
-          <div style={{marginBottom: 5}}>{`ID: ${id}`}</div>
+          <div style={{marginBottom: 3, paddingBottom: 5, borderBottom: '1px solid #f0f2f5'}}>{`ID: ${id}`}</div>
           <div>Описание товара:</div>
-          <div>{description}</div>
+          <div style={{marginBottom: 3, paddingBottom: 5, borderBottom: '1px solid #f0f2f5'}}>{description}</div>
           <div>Параметры:</div>
           <ul>
             {params.length ? params.map(param =>
