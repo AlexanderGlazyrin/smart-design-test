@@ -13,6 +13,7 @@ export default function Home({items: serverItems}) {
   const [filterItems, setFilterItems] = useState(items);
   const [select, setSelect] = useState('name')
   const [inputValue, setInputValue] = useState('')
+  const [params, setParams] = useState([])
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,29 +26,63 @@ export default function Home({items: serverItems}) {
 
   useEffect(() => {
     setFilterItems(items)
+    setParams(getParams)
+
   }, [items])
+
+  function getParams() {
+    const newParams = []
+    items.forEach(item => {
+      item.params.forEach(param => {
+        if(!newParams.includes(param.first)) {
+          newParams.push(param.first)
+        }
+      })
+    })
+    return(newParams)
+  }
 
   const filter = (e) => {
     setInputValue(e.target.value)
     setFilterItems(items);
 
-    if (select === 'name') {
-      setFilterItems(prev => {
-        return prev.filter(item => {
-          return item.itemName.toLowerCase().indexOf(e.target.value.toLowerCase().trim()) > -1
+    switch (select) {
+      case 'name':
+        setFilterItems(prev => {
+          return prev.filter(item => {
+            return item.itemName.toLowerCase().indexOf(e.target.value.toLowerCase().trim()) > -1
+          })
         })
-      })
-    } else if (select === 'id') {
-      setFilterItems(prev => {
-        return prev.filter(item => {
-          return item._id.toLowerCase().indexOf(e.target.value.toLowerCase().trim()) > -1
+        break;
+      case 'id':
+        setFilterItems(prev => {
+          return prev.filter(item => {
+            return item._id.toLowerCase().indexOf(e.target.value.toLowerCase().trim()) > -1
+          })
         })
-      })
+        break;
+      default:
+        setFilterItems(prev => {
+          return prev.filter(item => {
+            for (let param of item.params) {
+              if(param.first === select) {
+                return param.last.toLowerCase().indexOf(e.target.value.toLowerCase().trim()) > -1
+              }
+            }
+            return false;
+          })
+        })
     }
   }
 
   const changeSelect = (value) => {
-    setFilterItems(items);
+    if (value === 'name' || value === 'id') {
+      setFilterItems(items);
+    } else {
+      setFilterItems(items.filter(item => {
+        return item.params.some(param => param.first === value)
+      }));
+    }
     setInputValue('')
     setSelect(value)
   }
@@ -69,6 +104,7 @@ export default function Home({items: serverItems}) {
             <Select defaultValue={select} style={{width: '100%'}} onChange={changeSelect}>
               <Option value="name">Наименование</Option>
               <Option value="id">Идентификатор</Option>
+              {params ? params.map(el => <Option key={el} name={el}>{`Параметр: ${el}`}</Option>) : null}
             </Select>
           </Col>
           <Col span={20}>
@@ -76,11 +112,12 @@ export default function Home({items: serverItems}) {
           </Col>
         </Row>
       <Row gutter={[24, 24]}>
-        {filterItems.reverse().map(item => {
+        {filterItems.map(item => {
           return <AppCard
             key={item._id}
             title={item.itemName}
             id={item._id}
+            params={item.params}
             description={item.description}
           />
         })}

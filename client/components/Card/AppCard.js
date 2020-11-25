@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux';
 import {deleteItemAC} from '../../redux/action-creators';
 import React from 'react';
 
-export const AppCard = ({title, id, description}) => {
+export const AppCard = ({title, id, description, params}) => {
   const dispatch = useDispatch()
 
   const deleteItem = () => {
@@ -19,6 +19,12 @@ export const AppCard = ({title, id, description}) => {
           <div style={{marginBottom: 5}}>{`ID: ${id}`}</div>
           <div>Описание товара:</div>
           <div>{description}</div>
+          <div>Параметры:</div>
+          <ul>
+            {params.length ? params.map(param =>
+              <li key={param.first}>{`${param.first}: ${param.last}`}</li>,
+            ) : null}
+          </ul>
         </Card>
       </div>
     </Col>

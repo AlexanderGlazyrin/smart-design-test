@@ -3,7 +3,8 @@ import {useDispatch} from 'react-redux';
 import {useRouter} from 'next/router';
 import {createItemAC} from '../redux/action-creators';
 import React from 'react';
-import {Form, Input, Button} from 'antd';
+import {Form, Input, Button, Space, Row, Col} from 'antd';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 const layout = {
   labelCol: {span: 4},
@@ -20,8 +21,8 @@ export default function AddItem() {
   const router = useRouter()
 
   const createItem = (values) => {
-    const {itemName, description} = values;
-    dispatch(createItemAC({itemName, description}))
+    const {itemName, description, params} = values;
+    dispatch(createItemAC({itemName, description, params}))
       .then(() => {
         router.push('/');
       })
@@ -36,6 +37,42 @@ export default function AddItem() {
         <Form.Item type={'text'} name={'description'} label="Описание" rules={[{required: true}]}>
           <Input.TextArea/>
         </Form.Item>
+        <Row>
+          <Col offset={4} span={24}>
+            <Form.List name="params" >
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(field => (
+                    <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                      <Form.Item
+                        {...field}
+                        name={[field.name, 'first']}
+                        fieldKey={[field.fieldKey, 'first']}
+                        rules={[{ required: true, message: 'Missing first name' }]}
+                      >
+                        <Input placeholder="Параметр" />
+                      </Form.Item>
+                      <Form.Item
+                        {...field}
+                        name={[field.name, 'last']}
+                        fieldKey={[field.fieldKey, 'last']}
+                        rules={[{ required: true, message: 'Missing last name' }]}
+                      >
+                        <Input placeholder="Значение" />
+                      </Form.Item>
+                      <MinusCircleOutlined onClick={() => remove(field.name)} />
+                    </Space>
+                  ))}
+                  <Form.Item>
+                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                      Добавить параметр
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+          </Col>
+        </Row>
         <Form.Item wrapperCol={{...layout.wrapperCol, offset: 4}}>
           <Button type="primary" htmlType="submit">
             Добавить

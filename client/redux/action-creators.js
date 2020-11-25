@@ -23,11 +23,11 @@ export const addItemAC = (payload) => {
 
 export const createItemAC = (payload) => {
   return async (dispatch) => {
-    const {itemName, description} = payload;
+    const {itemName, description, params} = payload;
     const res = await(await fetch('http://localhost:3001/new-item', {
       method: 'POST',
       headers: {'Content-type': 'application/json'},
-      body: JSON.stringify({itemName, description})
+      body: JSON.stringify({itemName, description, params})
     })).json()
     dispatch(addItemAC(res.item));
   }
