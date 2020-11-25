@@ -61,6 +61,13 @@ export default function Home({items: serverItems}) {
           })
         })
         break;
+      case 'description':
+        setFilterItems(prev => {
+          return prev.filter(item => {
+            return item.description.trim().toLowerCase().indexOf(e.target.value.trim().toLowerCase().trim()) > -1
+          })
+        })
+        break;
       default:
         setFilterItems(prev => {
           return prev.filter(item => {
@@ -76,7 +83,7 @@ export default function Home({items: serverItems}) {
   }
 
   const changeSelect = (value) => {
-    if (value === 'name' || value === 'id') {
+    if (value === 'name' || value === 'id' || value === 'description') {
       setFilterItems(items);
     } else {
       setFilterItems(items.filter(item => {
@@ -104,6 +111,7 @@ export default function Home({items: serverItems}) {
             <Select defaultValue={select} style={{width: '100%'}} onChange={changeSelect}>
               <Option value="name">Наименование</Option>
               <Option value="id">Идентификатор</Option>
+              <Option value="description">Описание</Option>
               {params ? params.map(el => <Option key={el} name={el}>{`Параметр: ${el}`}</Option>) : null}
             </Select>
           </Col>
