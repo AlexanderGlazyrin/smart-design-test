@@ -21,7 +21,12 @@ export default function AddItem() {
   const router = useRouter()
 
   const createItem = (values) => {
-    const {itemName, description, params} = values;
+    const {itemName, description, params: par} = values;
+    const params = par.map(el => {
+      const first = (el.first.trim()[0].toUpperCase() + el.first.trim().slice(1).toLowerCase())
+      const last = el.last.trim()
+      return {first, last}
+    })
     dispatch(createItemAC({itemName, description, params}))
       .then(() => {
         router.push('/');

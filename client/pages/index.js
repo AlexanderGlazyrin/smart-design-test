@@ -34,8 +34,8 @@ export default function Home({items: serverItems}) {
     const newParams = []
     items.forEach(item => {
       item.params.forEach(param => {
-        if(!newParams.includes(param.first)) {
-          newParams.push(param.first)
+        if(!newParams.includes(param.first.trim())) {
+          newParams.push(param.first.trim())
         }
       })
     })
@@ -50,14 +50,14 @@ export default function Home({items: serverItems}) {
       case 'name':
         setFilterItems(prev => {
           return prev.filter(item => {
-            return item.itemName.toLowerCase().indexOf(e.target.value.toLowerCase().trim()) > -1
+            return item.itemName.trim().toLowerCase().indexOf(e.target.value.trim().toLowerCase().trim()) > -1
           })
         })
         break;
       case 'id':
         setFilterItems(prev => {
           return prev.filter(item => {
-            return item._id.toLowerCase().indexOf(e.target.value.toLowerCase().trim()) > -1
+            return item._id.trim().toLowerCase().indexOf(e.target.value.trim().toLowerCase().trim()) > -1
           })
         })
         break;
@@ -66,7 +66,7 @@ export default function Home({items: serverItems}) {
           return prev.filter(item => {
             for (let param of item.params) {
               if(param.first === select) {
-                return param.last.toLowerCase().indexOf(e.target.value.toLowerCase().trim()) > -1
+                return param.last.trim().toLowerCase().indexOf(e.target.value.trim().toLowerCase().trim()) > -1
               }
             }
             return false;

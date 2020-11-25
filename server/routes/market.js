@@ -12,7 +12,6 @@ router.get('/market', async (req, res) => {
 
 router.post('/new-item', async (req, res) => {
   try {
-    console.log(req.body)
     const {itemName, description, params} = req.body;
     const item = new Item({
       itemName,
