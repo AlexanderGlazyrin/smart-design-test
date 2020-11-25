@@ -48,7 +48,7 @@ export default function AddItem() {
                         {...field}
                         name={[field.name, 'first']}
                         fieldKey={[field.fieldKey, 'first']}
-                        rules={[{ required: true, message: 'Missing first name' }]}
+                        rules={[{ required: true, message: 'Введите параметр' }]}
                       >
                         <Input placeholder="Параметр" />
                       </Form.Item>
@@ -56,7 +56,7 @@ export default function AddItem() {
                         {...field}
                         name={[field.name, 'last']}
                         fieldKey={[field.fieldKey, 'last']}
-                        rules={[{ required: true, message: 'Missing last name' }]}
+                        rules={[{ required: true, message: 'Введите значение' }]}
                       >
                         <Input placeholder="Значение" />
                       </Form.Item>
